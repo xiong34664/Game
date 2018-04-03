@@ -1,30 +1,30 @@
 window.onload = function () {
     var magnitude = 60;
 
-    function Snake(size, speed, score, arr) {                                   //移动的对象
-        this.size = size,                                    //长度
-            this.toLeft = toLeft,                             //向左移动
-            this.toRight = toRight,                           //向右移动
-            this.toTop = toTop,                               //向上移动
-            this.toBottom = toBottom,                         //向下移动
-            this.speed = speed,                                //移动速度
-            this.score = score,
-            this.place = [arr],                    //移动物体的身体
-            this.timer = null                                 //持续移动
+    function Snake(size, speed, score, arr) {                 //自定义移动的对象
+        this.size = size;                                    //长度
+        this.toLeft = toLeft;                             //向左移动
+        this.toRight = toRight;                           //向右移动
+        this.toTop = toTop;                               //向上移动
+        this.toBottom = toBottom;                         //向下移动
+        this.speed = speed;                                //移动速度
+        this.score = score;                               //分数
+        this.place = [arr];                             //移动物体的身体
+        this.timer = null;                                //持续移动
     }
 
-    var snake = new Snake(1, 100, 0, [0, 0]);
+    var snake = new Snake(1, 100, 0, [0, 0]);        //初始化对象
     var map = new Array();                          //创建地图
     var maps = document.getElementById("map");      //地图存放的节点
-    var keyCode;
-    map = init(magnitude);
+    var keyCode;                                    //点击键盘
+    map = init(magnitude);                          //初始化地图size为magnitude
 
-    enter(snake.place)
+    enter(snake.place)                              //把移动的物体身体放进  地图中
     rounds()                                        //随机生成food
-    show(map);
+    show(map);                                      //将地图打印在屏幕上
 
-    window.addEventListener('keydown', keydowns, false);   //点击键盘控制  走向
-    function keydowns(e) {
+    window.addEventListener('keydown', keydowns, false);   //绑定点击键盘事件  控制走向  只有绑定了才能解绑
+    function keydowns(e) {                                 //键盘点击事件
         if (!e)
             e = window.event;
         if (document.all) {
@@ -54,22 +54,21 @@ window.onload = function () {
         }
     }
 
-    function move(that, arr) {
-
+    function move(that, arr) {                                  //移动函数
         var x = arr[0];
         var y = arr[1];
         if (x < 0 || x >= magnitude || y < 0 || y >= magnitude) {
             over(snake.score)
-            return that;
+            return;
         }
-        that.unshift(arr);                                      //推进
+        that.unshift(arr);                                      //将移动方向上的下一个坐标存进  移动物体的身体    推进
         if (map[x][y] != 3) {
             if (map[x][y] != 0) {
                 over(snake.score);
-                return that;
+                return;
             }
-            var xy = that.pop();                                 //退出
-            map[xy[0]][xy[1]] = 0;
+            var xy = that.pop();                                 //将移动物体的最后一个  移动物体的身体  退出
+            map[xy[0]][xy[1]] = 0;                               //退出后 将身体部分坐标换成  地图
 
         }
         else {
@@ -78,7 +77,6 @@ window.onload = function () {
             document.getElementById("s").innerHTML = snake.score + "分";
             rounds()
         }
-        return that;
     }
 
     function toLeft() {                             //向左移动
@@ -87,7 +85,7 @@ window.onload = function () {
         this.timer = setInterval(function () {        //持续移动
             var x = that[0][0];
             var y = that[0][1] - 1;
-            that = move(that, [x, y])
+            move(that, [x, y])
             enter(that)
         }, speed)
     }
@@ -98,7 +96,7 @@ window.onload = function () {
         this.timer = setInterval(function () {        //持续移动
             var x = that[0][0];
             var y = that[0][1] + 1;
-            that = move(that, [x, y])
+            move(that, [x, y])
             enter(that)
         }, speed)
     }
@@ -109,7 +107,7 @@ window.onload = function () {
         this.timer = setInterval(function () {        //持续移动
             var x = that[0][0] - 1;
             var y = that[0][1];
-            that = move(that, [x, y])
+            move(that, [x, y])
             enter(that)
         }, speed)
     }
@@ -120,7 +118,7 @@ window.onload = function () {
         this.timer = setInterval(function () {        //持续移动
             var x = that[0][0] + 1;
             var y = that[0][1];
-            that = move(that, [x, y])
+            move(that, [x, y])
             enter(that)
         }, speed)
     }
@@ -165,16 +163,16 @@ window.onload = function () {
     function show(map) {                            //显示地图
         var luList = maps.children[0];
         luList.innerHTML = "";
-        var f=true;
+        var f = true;
         for (var i = 0; i < map.length; i++) {
             for (var j = 0; j < map[0].length; j++) {
                 var li = document.createElement("li")
                 switch (map[i][j]) {
                     case 1:
-                        if(f=!f)
+                        if (f = !f)
                             li.className = "body1";
 
-                        else{
+                        else {
                             li.className = "body2";
 
                         }
@@ -198,7 +196,7 @@ window.onload = function () {
         console.log("游戏结束");
         clearInterval(snake.timer)
 
-        window.removeEventListener("keydown", keydowns, false);   //接触点击键盘触发事件
+        window.removeEventListener("keydown", keydowns, false);   //解绑点击键盘触发事件
         mask.style.display = "block";
     }
 
