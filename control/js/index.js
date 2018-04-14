@@ -1,7 +1,7 @@
 window.onload = function () {
     var magnitude = 60;
 
-    function Snake(size, speed, score, arr) {                 //自定义移动的对象1
+    function Snake(size, speed, score, arr) {                 //自定义移动的对象
         this.size = size;                                    //长度
         this.toLeft = toLeft;                             //向左移动
         this.toRight = toRight;                           //向右移动
