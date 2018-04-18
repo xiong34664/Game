@@ -1,5 +1,5 @@
 window.onload = function () {
-    var magnitude = 60;
+    var magnitude = 30;
 
     function Snake(size, speed, score, arr) {                 //自定义移动的对象
         this.size = size;                                    //长度
@@ -9,11 +9,11 @@ window.onload = function () {
         this.toBottom = toBottom;                         //向下移动
         this.speed = speed;                                //移动速度
         this.score = score;                               //分数
-        this.place = [arr];                             //移动物体的身体
+        this.place = arr;                             //移动物体的身体
         this.timer = null;                                //持续移动
     }
 
-    var snake = new Snake(1, 100, 0, [0, 0]);        //初始化对象
+    var snake = new Snake(1, 100, 0, [[0, 0],[0,1],[0,2]]);        //初始化对象
     var map = new Array();                          //创建地图
     var maps = document.getElementById("map");      //地图存放的节点
     var keyCode;                                    //点击键盘
@@ -63,7 +63,7 @@ window.onload = function () {
         }
         that.unshift(arr);                                      //将移动方向上的下一个坐标存进  移动物体的身体    推进
         if (map[x][y] != 3) {
-            if (map[x][y] != 0) {
+            if (map[x][y] != 0 && map[x][y] !=1) {      //  判断是否能吃到自己
                 over(snake.score);
                 return;
             }
@@ -85,7 +85,7 @@ window.onload = function () {
         this.timer = setInterval(function () {        //持续移动
             var x = that[0][0];
             var y = that[0][1] - 1;
-            move(that, [x, y])
+            move(that, [x, y]);
             enter(that)
         }, speed)
     }
@@ -96,7 +96,7 @@ window.onload = function () {
         this.timer = setInterval(function () {        //持续移动
             var x = that[0][0];
             var y = that[0][1] + 1;
-            move(that, [x, y])
+            move(that, [x, y]);
             enter(that)
         }, speed)
     }
@@ -107,7 +107,7 @@ window.onload = function () {
         this.timer = setInterval(function () {        //持续移动
             var x = that[0][0] - 1;
             var y = that[0][1];
-            move(that, [x, y])
+            move(that, [x, y]);
             enter(that)
         }, speed)
     }
@@ -118,16 +118,16 @@ window.onload = function () {
         this.timer = setInterval(function () {        //持续移动
             var x = that[0][0] + 1;
             var y = that[0][1];
-            move(that, [x, y])
+            move(that, [x, y]);
             enter(that)
         }, speed)
     }
 
-    function rounds() {     //生成随机位置  和随机2/4
+    function rounds() {     //生成随机食物位置 
         var row = Math.round(Math.random() * (magnitude - 1));
         var col = Math.round(Math.random() * (magnitude - 1));
-        console.log(row + ":" + col)
-        if (map[row][col] == 0) {
+        console.log(row + ":" + col);
+        if (map[row][col] === 0) {
             map[row][col] = 3;
         } else {
             rounds();
@@ -166,7 +166,7 @@ window.onload = function () {
         var f = true;
         for (var i = 0; i < map.length; i++) {
             for (var j = 0; j < map[0].length; j++) {
-                var li = document.createElement("li")
+                var li = document.createElement("li");
                 switch (map[i][j]) {
                     case 1:
                         if (f = !f)
@@ -208,7 +208,7 @@ window.onload = function () {
     })
 
     function newGame() {
-        snake = new Snake(1, 200, 0, [0, 0]);
+        snake = new Snake(1, 200, 0, [[0, 0],[0,1],[0,2]]);
         map = init(magnitude);
 
         enter(snake.place)

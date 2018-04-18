@@ -21,8 +21,8 @@ ul {
 
 .map ul li {
     float: left;
-    width: 10px;
-    height: 10px;
+    width: 20px;
+    height: 20px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -30,10 +30,10 @@ ul {
 }
 
 .map .body1 {
-    background-color: #2bffb2;
+    background-color: #81bcff;
 }
 .map .body2{
-    background-color: #20ee5c;
+    background-color: #47b3ee;
 }
 .map .head {
     background-color: #ff4441;
